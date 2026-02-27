@@ -569,97 +569,82 @@
     <script>
         // ==================== BOOKS DATABASE ====================
         const books = [
-            {
-                id: 1,
-                title: "Respiratory System Complete Textbook",
-                author: "Abubakar Sadeeq",
-                category: "Physiology",
-                subcategory: "Respiratory",
-                pages: 450,
-                readers: 1234,
-                featured: true,
-                recent: true,
-                filename: "respiratory-book.html",
-                description: "Complete coverage of respiratory physiology, pathology, and pharmacology."
-            },
-            {
-                id: 2,
-                title: "Cardiology: From Basics to Clinical",
-                author: "Abubakar Sadeeq",
-                category: "Cardiology",
-                subcategory: "Cardiovascular",
-                pages: 380,
-                readers: 892,
-                featured: true,
-                recent: true,
-                filename: "cardiology-book.html",
-                description: "Comprehensive cardiology textbook covering all topics."
-            },
-            {
-                id: 3,
-                title: "Neuroanatomy Made Simple",
-                author: "Abubakar Sadeeq",
-                category: "Neuroscience",
-                subcategory: "Anatomy",
-                pages: 520,
-                readers: 1567,
-                featured: true,
-                recent: false,
-                filename: "neuroanatomy-book.html",
-                description: "Easy to understand neuroanatomy with diagrams."
-            },
-            {
-                id: 4,
-                title: "Biochemistry: High-Yield Concepts",
-                author: "Abubakar Sadeeq",
-                category: "Biochemistry",
-                subcategory: "Molecular",
-                pages: 410,
-                readers: 2103,
-                featured: true,
-                recent: true,
-                filename: "biochemistry-book.html",
-                description: "Essential biochemistry for medical students."
-            },
-            {
-                id: 5,
-                title: "Pharmacology Made Ridiculously Simple",
-                author: "Abubakar Sadeeq",
-                category: "Pharmacology",
-                subcategory: "Clinical",
-                pages: 390,
-                readers: 1876,
-                featured: false,
-                recent: true,
-                filename: "pharmacology-book.html",
-                description: "Easy pharmacology with mnemonics."
-            },
-            {
-                id: 6,
-                title: "Pathology: Understanding Disease",
-                author: "Abubakar Sadeeq",
-                category: "Pathology",
-                subcategory: "General",
-                pages: 560,
-                readers: 1456,
-                featured: false,
-                recent: false,
-                filename: "pathology-book.html",
-                description: "Complete pathology textbook."
-            }
-        ];
+    {
+        id: 1,
+        title: "Respiratory System Complete Textbook",
+        author: "Abubakar Sadeeq",
+        category: "Physiology",
+        subcategory: "Respiratory",
+        pages: 450,
+        readers: 1234,
+        featured: true,
+        recent: true,
+        filename: "respiratory-book.html",
+        description: "Complete coverage of respiratory physiology, pathology, and pharmacology."
+    },
+    {
+        id: 2,
+        title: "RESPIRATORY SYSTEM",
+        author: "Abubakar Sadeeq",
+        category: "Physiology",
+        subcategory: "Respiratory",
+        pages: 380,
+        readers: 567,
+        featured: true,
+        recent: true,
+        filename: "RESPIRATORY SYSTEM.html",
+        description: "Comprehensive respiratory system textbook."
+    },
+    {
+        id: 3,
+        title: "Respiratory System · Special Topics",
+        author: "Abubakar Sadeeq",
+        category: "Physiology",
+        subcategory: "Respiratory",
+        pages: 320,
+        readers: 432,
+        featured: true,
+        recent: true,
+        filename: "Respiratory System · Special Topics.html",
+        description: "Advanced topics in respiratory physiology and pathology."
+    },
+    {
+        id: 4,
+        title: "RESPIRATORY MCQs BANK",
+        author: "Abubakar Sadeeq",
+        category: "Question Bank",
+        subcategory: "Respiratory",
+        pages: 250,
+        readers: 789,
+        featured: true,
+        recent: true,
+        filename: "RESPIRATORY MCQs BANK.html",
+        description: "500+ high-yield respiratory system MCQs with detailed explanations."
+    }
+];
 
         // Categories data
         const categories = [
-            { name: "Anatomy", icon: "fa-skeleton", count: 3 },
-            { name: "Physiology", icon: "fa-heartbeat", count: 4 },
-            { name: "Pathology", icon: "fa-microscope", count: 2 },
-            { name: "Pharmacology", icon: "fa-pills", count: 3 },
-            { name: "Biochemistry", icon: "fa-dna", count: 2 },
-            { name: "Neuroscience", icon: "fa-brain", count: 2 },
-            { name: "Cardiology", icon: "fa-heart", count: 3 },
-            { name: "Respiratory", icon: "fa-lungs", count: 2 }
-        ];
+    { name: "Anatomy", icon: "fa-skeleton", count: 0 },
+    { name: "Physiology", icon: "fa-heartbeat", count: 3 },
+    { name: "Pathology", icon: "fa-microscope", count: 0 },
+    { name: "Pharmacology", icon: "fa-pills", count: 0 },
+    { name: "Biochemistry", icon: "fa-dna", count: 0 },
+    { name: "Neuroscience", icon: "fa-brain", count: 0 },
+    { name: "Cardiology", icon: "fa-heart", count: 0 },
+    { name: "Question Bank", icon: "fa-question-circle", count: 1 }
+];
+        // Auto-calculate category counts
+function updateCategoryCounts() {
+    categories.forEach(cat => {
+        cat.count = books.filter(book => 
+            book.category === cat.name || book.subcategory === cat.name
+        ).length;
+    });
+}
+
+// Call this after defining categories
+updateCategoryCounts();
 
         // ==================== HELPER FUNCTIONS ====================
         function showNotification(message, isSuccess = true) {
