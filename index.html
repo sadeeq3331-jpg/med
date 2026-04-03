@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Auto Visitor · Loop · Refresh + Click</title>
+  <title>Auto Visitor · Multiple Clicks + Refresh Loop</title>
   <style>
     * {
       box-sizing: border-box;
@@ -20,7 +20,6 @@
       align-items: center;
     }
 
-    /* main card */
     .automator-card {
       max-width: 1400px;
       width: 100%;
@@ -30,10 +29,8 @@
       box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(56, 189, 248, 0.2);
       overflow: hidden;
-      transition: all 0.2s;
     }
 
-    /* header / controls */
     .control-panel {
       padding: 1.5rem 2rem;
       background: rgba(2, 8, 23, 0.7);
@@ -45,18 +42,18 @@
     }
 
     .input-group {
-      flex: 3;
-      min-width: 220px;
+      flex: 2;
+      min-width: 200px;
     }
 
     .input-group label {
       display: block;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: #94a3b8;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.3rem;
     }
 
     .url-input {
@@ -64,11 +61,10 @@
       background: #0f172a;
       border: 1px solid #334155;
       border-radius: 1.2rem;
-      padding: 0.8rem 1.2rem;
-      font-size: 0.95rem;
+      padding: 0.7rem 1.2rem;
+      font-size: 0.9rem;
       color: #f1f5f9;
       font-family: monospace;
-      transition: 0.2s;
       outline: none;
     }
 
@@ -77,31 +73,35 @@
       box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
     }
 
-    .options-group {
-      flex: 1.2;
+    .options-row {
+      flex: 3;
       display: flex;
-      gap: 1rem;
       flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-end;
     }
 
     .opt-item {
       display: flex;
       flex-direction: column;
       gap: 0.3rem;
+      background: #0f172a60;
+      padding: 0.3rem 0.8rem;
+      border-radius: 1rem;
     }
 
     .opt-item label {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 500;
       color: #94a3b8;
     }
 
-    .delay-input {
+    .delay-input, .clicks-input {
       background: #0f172a;
       border: 1px solid #334155;
       border-radius: 2rem;
-      padding: 0.5rem 1rem;
-      width: 90px;
+      padding: 0.4rem 0.8rem;
+      width: 80px;
       color: white;
       font-weight: 500;
       text-align: center;
@@ -112,32 +112,29 @@
       align-items: center;
       gap: 0.5rem;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #cbd5e1;
       background: #0f172a;
-      padding: 0.5rem 1rem;
+      padding: 0.4rem 1rem;
       border-radius: 2rem;
       border: 1px solid #334155;
     }
 
     .button-group {
-      flex: 1;
       display: flex;
       gap: 1rem;
-      justify-content: flex-end;
     }
 
     .btn {
       border: none;
       font-weight: 600;
-      padding: 0.7rem 1.6rem;
+      padding: 0.6rem 1.4rem;
       border-radius: 2rem;
       font-size: 0.85rem;
       cursor: pointer;
       transition: 0.2s;
       background: #1e293b;
       color: #e2e8f0;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
 
     .btn-start {
@@ -149,7 +146,6 @@
     .btn-start:hover {
       background: #166534;
       transform: scale(0.97);
-      box-shadow: 0 4px 12px rgba(34,197,94,0.2);
     }
 
     .btn-stop {
@@ -160,16 +156,15 @@
 
     .btn-stop:hover {
       background: #7f1d1d;
-      transform: scale(0.97);
     }
 
     .status-area {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.6rem 2rem;
+      padding: 0.5rem 2rem;
       background: #02061760;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       border-bottom: 1px solid #1e293b;
       flex-wrap: wrap;
       gap: 0.5rem;
@@ -178,7 +173,7 @@
     .status-badge {
       font-family: monospace;
       background: #0f172a;
-      padding: 0.25rem 1rem;
+      padding: 0.2rem 1rem;
       border-radius: 3rem;
       color: #7dd3fc;
     }
@@ -191,7 +186,6 @@
       border-radius: 2rem;
     }
 
-    /* iframe container */
     .viewport {
       padding: 1rem 1.5rem 1.8rem 1.5rem;
       background: #020617;
@@ -211,7 +205,6 @@
       display: block;
       border: none;
       background: white;
-      transition: all 0.1s;
     }
 
     .click-feedback {
@@ -229,15 +222,19 @@
     }
 
     footer {
-      padding: 0.8rem 2rem;
+      padding: 0.7rem 2rem;
       text-align: center;
       font-size: 0.7rem;
       color: #4b556b;
       border-top: 1px solid #1e293b;
     }
 
-    @media (max-width: 780px) {
+    @media (max-width: 860px) {
       .control-panel {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .options-row {
         flex-direction: column;
         align-items: stretch;
       }
@@ -255,18 +252,30 @@
 <div class="automator-card">
   <div class="control-panel">
     <div class="input-group">
-      <label>🔗 TARGET SITE URL</label>
-      <input type="text" id="siteUrl" class="url-input" placeholder="https://example.com  or  http://localhost:3000" value="https://example.com">
+      <label>🔗 TARGET URL</label>
+      <input type="text" id="siteUrl" class="url-input" placeholder="https://example.com" value="https://example.com">
     </div>
 
-    <div class="options-group">
+    <div class="options-row">
       <div class="opt-item">
         <label>⏱️ CYCLE DELAY (sec)</label>
         <input type="number" id="cycleDelay" class="delay-input" value="3" step="0.5" min="1" max="15">
       </div>
       <div class="opt-item">
+        <label>🎲 MIN CLICKS</label>
+        <input type="number" id="minClicks" class="clicks-input" value="3" min="1" max="20" step="1">
+      </div>
+      <div class="opt-item">
+        <label>🎲 MAX CLICKS</label>
+        <input type="number" id="maxClicks" class="clicks-input" value="4" min="1" max="20" step="1">
+      </div>
+      <div class="opt-item">
+        <label>⏲️ CLICK DELAY (sec)</label>
+        <input type="number" id="clickDelay" class="delay-input" value="0.15" step="0.05" min="0.05" max="1">
+      </div>
+      <div class="opt-item">
         <label class="checkbox-label">
-          <input type="checkbox" id="randomClickToggle"> 🎲 Random click position
+          <input type="checkbox" id="randomClickToggle"> 🎯 Random positions
         </label>
       </div>
     </div>
@@ -280,7 +289,7 @@
   <div class="status-area">
     <div class="status-badge" id="statusMsg">⚡ idle</div>
     <div class="warning-note" id="securityNote">
-      ⚠️ Cross-origin: clicks inside iframe work only if SAME ORIGIN (else simulated on iframe border)
+      ⚠️ Cross-origin: deep clicks only work if SAME ORIGIN (else surface clicks)
     </div>
     <div class="status-badge" id="cycleCounter">🔄 cycles: 0</div>
   </div>
@@ -291,8 +300,7 @@
     </div>
   </div>
   <footer>
-    💡 How it works: paste link → START → refreshes iframe → clicks on screen (center/random) → waits delay → repeats until STOP. 
-    Real DOM click inside iframe possible <strong>only for same-origin sites</strong> (due to browser security). Otherwise visual click simulation on iframe element.
+    💡 <strong>New: 3–4 random clicks per cycle</strong> (configurable). After page loads, it performs quick random clicks, then waits cycle delay → refreshes → repeats. Click positions respect the random toggle.
   </footer>
 </div>
 
@@ -308,6 +316,9 @@
     const statusSpan = document.getElementById('statusMsg');
     const cycleCounterSpan = document.getElementById('cycleCounter');
     const delayInput = document.getElementById('cycleDelay');
+    const minClicksInput = document.getElementById('minClicks');
+    const maxClicksInput = document.getElementById('maxClicks');
+    const clickDelayInput = document.getElementById('clickDelay');
     const randomClickToggle = document.getElementById('randomClickToggle');
     const clickEffectDiv = document.getElementById('clickEffect');
 
@@ -317,8 +328,8 @@
     let currentTimeout = null;
     let currentLoadHandler = null;
     let currentBaseUrl = '';
-    let isWaitingForLoad = false;
-    let scheduledNext = false;
+    let clickSequenceActive = false;   // prevent overlapping clicks
+    let currentSafetyTimer = null;
 
     // helper: normalize URL
     function normalizeUrl(raw) {
@@ -330,45 +341,37 @@
       return url;
     }
 
-    // add timestamp to force fresh load (no cache)
     function addForceReloadParam(url) {
       try {
         const urlObj = new URL(url);
         urlObj.searchParams.set('_autorefresh', Date.now());
         return urlObj.toString();
       } catch (e) {
-        // fallback for invalid URL, just append
         return url + (url.includes('?') ? '&' : '?') + '_autorefresh=' + Date.now();
       }
     }
 
-    // visual click ripple effect at given client coordinates
     function showClickRipple(clientX, clientY) {
       if (!clickEffectDiv) return;
       clickEffectDiv.style.left = clientX + 'px';
       clickEffectDiv.style.top = clientY + 'px';
-      clickEffectDiv.style.opacity = '0.85';
+      clickEffectDiv.style.opacity = '0.9';
       setTimeout(() => {
         if (clickEffectDiv) clickEffectDiv.style.opacity = '0';
       }, 180);
     }
 
-    // try to perform actual click inside iframe (same origin only)
-    // returns true if we successfully clicked inside iframe document, false otherwise
-    function tryDeepClickInsideIframe(iframeElement, randomMode = false) {
+    // deep click inside iframe (same origin only)
+    function tryDeepClickInsideIframe(iframeElement, randomMode) {
       try {
-        // check if we have access to contentDocument (same origin)
         const doc = iframeElement.contentDocument;
         if (!doc) return false;
         const body = doc.body;
         if (!body) return false;
         
-        // get bounding rect of iframe relative to viewport for coordinate mapping?
-        // we want to dispatch event inside iframe's window coordinates.
-        // we can get random element or body click.
         let targetElement;
         if (randomMode) {
-          const allElements = doc.querySelectorAll('a, button, input, div, p, span');
+          const allElements = doc.querySelectorAll('a, button, input, div, p, span, img');
           if (allElements.length > 0) {
             const randomIndex = Math.floor(Math.random() * allElements.length);
             targetElement = allElements[randomIndex];
@@ -376,22 +379,16 @@
             targetElement = body;
           }
         } else {
-          // center click on body or first interactive element?
-          // we click on body center for simplicity
           targetElement = body;
         }
         
-        // compute center of target element relative to iframe's internal viewport
+        const win = iframeElement.contentWindow;
         let rect;
         if (targetElement === body) {
-          // click at approximate center of body
-          const win = iframeElement.contentWindow;
           const viewWidth = win.innerWidth || doc.documentElement.clientWidth;
           const viewHeight = win.innerHeight || doc.documentElement.clientHeight;
           const centerX = viewWidth / 2;
           const centerY = viewHeight / 2;
-          
-          // dispatch mouse events
           const clickEvent = new MouseEvent('click', {
             view: win,
             bubbles: true,
@@ -400,47 +397,39 @@
             clientY: centerY
           });
           targetElement.dispatchEvent(clickEvent);
-          
-          // map iframe screen position for ripple effect (global)
           const iframeRect = iframeElement.getBoundingClientRect();
           const globalX = iframeRect.left + (centerX / (win.innerWidth || 1)) * iframeRect.width;
           const globalY = iframeRect.top + (centerY / (win.innerHeight || 1)) * iframeRect.height;
           showClickRipple(globalX, globalY);
           return true;
         } else {
-          // random element: get its bounding rect relative to iframe document
           const elRect = targetElement.getBoundingClientRect();
           const clickX = elRect.left + elRect.width / 2;
           const clickY = elRect.top + elRect.height / 2;
           const clickEvent = new MouseEvent('click', {
-            view: iframeElement.contentWindow,
+            view: win,
             bubbles: true,
             cancelable: true,
             clientX: clickX,
             clientY: clickY
           });
           targetElement.dispatchEvent(clickEvent);
-          
           const iframeRect = iframeElement.getBoundingClientRect();
-          const scaleX = iframeRect.width / (iframeElement.contentWindow.innerWidth || 1);
-          const scaleY = iframeRect.height / (iframeElement.contentWindow.innerHeight || 1);
+          const scaleX = iframeRect.width / (win.innerWidth || 1);
+          const scaleY = iframeRect.height / (win.innerHeight || 1);
           const globalX = iframeRect.left + clickX * scaleX;
           const globalY = iframeRect.top + clickY * scaleY;
           showClickRipple(globalX, globalY);
           return true;
         }
       } catch (err) {
-        // cross-origin or any error: cannot access contentDocument
         return false;
       }
     }
 
-    // Simulate click on the iframe surface (parent-level click on iframe element)
-    // this will trigger a click on the iframe container itself, not content, but gives visual feedback + can be detected by page wrapper
-    function simulateClickOnIframeSurface(iframeElement, randomMode = false) {
+    function simulateClickOnIframeSurface(iframeElement, randomMode) {
       const rect = iframeElement.getBoundingClientRect();
       if (rect.width === 0 || rect.height === 0) return;
-      
       let clickX, clickY;
       if (randomMode) {
         clickX = rect.left + Math.random() * rect.width;
@@ -449,8 +438,6 @@
         clickX = rect.left + rect.width / 2;
         clickY = rect.top + rect.height / 2;
       }
-      
-      // dispatch a click event on the iframe element itself (parent document)
       const clickEvent = new MouseEvent('click', {
         view: window,
         bubbles: true,
@@ -459,51 +446,63 @@
         clientY: clickY
       });
       iframeElement.dispatchEvent(clickEvent);
-      
-      // show visual ripple at that coordinate
       showClickRipple(clickX, clickY);
     }
 
-    // core click action: tries deep click (same origin) else surface click.
-    async function performClickAction() {
+    // perform a single click (deep or surface)
+    async function performOneClick(randomMode) {
       if (!running) return false;
-      const randomMode = randomClickToggle.checked;
       const clickedInside = tryDeepClickInsideIframe(iframe, randomMode);
       if (!clickedInside) {
-        // cross-origin fallback: simulate click on iframe element (border/surface)
         simulateClickOnIframeSurface(iframe, randomMode);
-        statusSpan.innerHTML = `🔘 click simulated (surface) ${randomMode ? '🎲 random' : '🎯 center'}`;
-        setTimeout(() => {
-          if (running) statusSpan.innerHTML = `🔄 active · next refresh soon`;
-        }, 800);
-      } else {
-        statusSpan.innerHTML = `✅ deep click (same origin) ${randomMode ? '🎲 random element' : '📌 body center'}`;
-        setTimeout(() => {
-          if (running) statusSpan.innerHTML = `🔄 active · next refresh soon`;
-        }, 800);
+        return false; // surface click
       }
       return true;
     }
 
-    // refresh iframe (force reload)
+    // perform a sequence of clicks (count = random between min/max)
+    async function performClickSequence() {
+      if (!running) return;
+      let min = parseInt(minClicksInput.value, 10);
+      let max = parseInt(maxClicksInput.value, 10);
+      if (isNaN(min)) min = 3;
+      if (isNaN(max)) max = 4;
+      if (min > max) { let tmp = min; min = max; max = tmp; }
+      if (min < 1) min = 1;
+      const numClicks = Math.floor(Math.random() * (max - min + 1)) + min;
+      const randomMode = randomClickToggle.checked;
+      const interClickDelaySec = parseFloat(clickDelayInput.value);
+      const delayMs = Math.max(50, (isNaN(interClickDelaySec) ? 0.15 : interClickDelaySec) * 1000);
+      
+      statusSpan.innerHTML = `🖱️ starting ${numClicks} random click(s) ...`;
+      for (let i = 0; i < numClicks; i++) {
+        if (!running) break;
+        statusSpan.innerHTML = `🖱️ click ${i+1}/${numClicks} ${randomMode ? '🎲 random' : '📍 center'}`;
+        await performOneClick(randomMode);
+        if (i < numClicks - 1 && running) {
+          await new Promise(resolve => setTimeout(resolve, delayMs));
+        }
+      }
+      if (running) {
+        statusSpan.innerHTML = `✅ ${numClicks} clicks done. Waiting cycle delay...`;
+      }
+    }
+
+    // refresh iframe
     function refreshIframe(url) {
       if (!url) return false;
       const reloadUrl = addForceReloadParam(url);
-      // detach previous load handler to avoid memory & double calls
       if (currentLoadHandler) {
         iframe.removeEventListener('load', currentLoadHandler);
         currentLoadHandler = null;
       }
-      // set new src
       iframe.src = reloadUrl;
       return true;
     }
 
-    // cycle: refresh -> wait load -> click -> schedule next refresh
+    // main cycle: refresh -> wait load -> perform click sequence -> wait cycle delay -> next cycle
     function startCycle() {
       if (!running) return;
-      
-      // clean any pending load handler and timeouts
       if (currentLoadHandler) {
         iframe.removeEventListener('load', currentLoadHandler);
         currentLoadHandler = null;
@@ -511,53 +510,32 @@
       
       const baseUrl = currentBaseUrl;
       if (!baseUrl) {
-        statusSpan.innerHTML = '⚠️ Invalid or empty URL. Stopping.';
+        statusSpan.innerHTML = '⚠️ Invalid URL. Stopping.';
         stopAutomation();
         return;
       }
       
-      statusSpan.innerHTML = `🔄 REFRESHING → ${new URL(baseUrl).hostname || 'target'}`;
-      // 1. refresh iframe
+      statusSpan.innerHTML = `🔄 REFRESHING → ${new URL(baseUrl).hostname}`;
       refreshIframe(baseUrl);
       
-      // 2. after iframe loads, we perform click and then schedule next cycle after delay+click
-      const onLoadHandler = () => {
+      const onLoadHandler = async () => {
         if (!running) return;
-        // after load, we click
-        performClickAction().then(() => {
-          if (!running) return;
-          // wait configured delay (seconds) after click then next refresh
-          const delaySec = parseFloat(delayInput.value);
-          const delayMs = Math.max(1000, (isNaN(delaySec) ? 3 : delaySec) * 1000);
-          statusSpan.innerHTML = `⏳ waiting ${delayMs/1000}s → next refresh`;
-          if (currentTimeout) clearTimeout(currentTimeout);
-          currentTimeout = setTimeout(() => {
-            if (running) {
-              // increment cycle counter after completing full cycle (refresh+click+wait)
-              cycleCount++;
-              cycleCounterSpan.innerText = `🔄 cycles: ${cycleCount}`;
-              // start next refresh + click loop
-              startCycle();
-            }
-          }, delayMs);
-        }).catch(err => {
-          console.warn("click error", err);
-          if (running) {
-            // even if click fails, continue loop
-            const delaySec = parseFloat(delayInput.value);
-            const delayMs = Math.max(1000, (isNaN(delaySec) ? 3 : delaySec) * 1000);
-            if (currentTimeout) clearTimeout(currentTimeout);
-            currentTimeout = setTimeout(() => {
-              if (running) {
-                cycleCount++;
-                cycleCounterSpan.innerText = `🔄 cycles: ${cycleCount}`;
-                startCycle();
-              }
-            }, delayMs);
-          }
-        });
+        // after load, perform multiple clicks
+        await performClickSequence();
+        if (!running) return;
         
-        // remove listener to avoid duplicate calls
+        const cycleDelaySec = parseFloat(delayInput.value);
+        const cycleDelayMs = Math.max(1000, (isNaN(cycleDelaySec) ? 3 : cycleDelaySec) * 1000);
+        statusSpan.innerHTML = `⏳ waiting ${cycleDelayMs/1000}s before next refresh...`;
+        if (currentTimeout) clearTimeout(currentTimeout);
+        currentTimeout = setTimeout(() => {
+          if (running) {
+            cycleCount++;
+            cycleCounterSpan.innerText = `🔄 cycles: ${cycleCount}`;
+            startCycle();
+          }
+        }, cycleDelayMs);
+        
         if (currentLoadHandler) {
           iframe.removeEventListener('load', currentLoadHandler);
           currentLoadHandler = null;
@@ -567,134 +545,83 @@
       currentLoadHandler = onLoadHandler;
       iframe.addEventListener('load', currentLoadHandler);
       
-      // safety timeout: if iframe takes too long to load (10 seconds), we force click+next anyway
-      if (currentTimeout) clearTimeout(currentTimeout);
-      const safetyTimeout = setTimeout(() => {
+      // safety: if iframe never loads, still continue after 10 sec
+      if (currentSafetyTimer) clearTimeout(currentSafetyTimer);
+      currentSafetyTimer = setTimeout(() => {
         if (running && currentLoadHandler) {
-          // iframe stuck? remove listener and manually perform click and continue
           iframe.removeEventListener('load', currentLoadHandler);
           currentLoadHandler = null;
-          performClickAction().then(() => {
+          // force proceed
+          performClickSequence().then(() => {
             if (running) {
-              const delaySec = parseFloat(delayInput.value);
-              const delayMs = Math.max(1000, (isNaN(delaySec) ? 3 : delaySec) * 1000);
+              const cycleDelaySec = parseFloat(delayInput.value);
+              const cycleDelayMs = Math.max(1000, (isNaN(cycleDelaySec) ? 3 : cycleDelaySec) * 1000);
               currentTimeout = setTimeout(() => {
                 if (running) {
                   cycleCount++;
                   cycleCounterSpan.innerText = `🔄 cycles: ${cycleCount}`;
                   startCycle();
                 }
-              }, delayMs);
+              }, cycleDelayMs);
             }
           });
         }
-      }, 9000);
-      // store safety timeout id to clear on stop
-      window._safetyTimer = safetyTimeout;
+      }, 10000);
     }
     
-    // stop all automation
     function stopAutomation() {
       running = false;
-      if (currentTimeout) {
-        clearTimeout(currentTimeout);
-        currentTimeout = null;
-      }
-      if (window._safetyTimer) {
-        clearTimeout(window._safetyTimer);
-        window._safetyTimer = null;
-      }
+      if (currentTimeout) { clearTimeout(currentTimeout); currentTimeout = null; }
+      if (currentSafetyTimer) { clearTimeout(currentSafetyTimer); currentSafetyTimer = null; }
       if (currentLoadHandler) {
         iframe.removeEventListener('load', currentLoadHandler);
         currentLoadHandler = null;
       }
-      isWaitingForLoad = false;
       statusSpan.innerHTML = '⏹️ STOPPED · idle';
-      // do NOT reset cycle count, keep it visible but we can optionally reset but keep.
       startBtn.disabled = false;
       stopBtn.disabled = false;
     }
     
-    // reset full automation state and start new session
     function startAutomation() {
-      if (running) {
-        stopAutomation();
-      }
+      if (running) stopAutomation();
       let rawUrl = urlInput.value;
       let normalized = normalizeUrl(rawUrl);
       if (!normalized) {
-        statusSpan.innerHTML = '❌ Please enter a valid URL (e.g., https://example.com)';
+        statusSpan.innerHTML = '❌ Please enter a valid URL (https://...)';
+        return;
+      }
+      try { new URL(normalized); } catch(e) {
+        statusSpan.innerHTML = '❌ Invalid URL format.';
         return;
       }
       
-      // test URL validation
-      try {
-        new URL(normalized);
-      } catch (e) {
-        statusSpan.innerHTML = '❌ Invalid URL format. Use http:// or https://';
-        return;
-      }
-      
-      // reset cycle count
       cycleCount = 0;
       cycleCounterSpan.innerText = `🔄 cycles: 0`;
       currentBaseUrl = normalized;
       
-      // clean iframe
-      if (currentLoadHandler) {
-        iframe.removeEventListener('load', currentLoadHandler);
-        currentLoadHandler = null;
-      }
+      if (currentLoadHandler) iframe.removeEventListener('load', currentLoadHandler);
       if (currentTimeout) clearTimeout(currentTimeout);
+      if (currentSafetyTimer) clearTimeout(currentSafetyTimer);
+      currentLoadHandler = null;
       
       running = true;
       statusSpan.innerHTML = `🚀 STARTING loop → ${new URL(normalized).hostname}`;
-      
-      // initial refresh and start first cycle
-      // reset iframe to about:blank before loading first target to avoid weird state
       iframe.src = 'about:blank';
-      // small delay before actual start to ensure clean slate
       setTimeout(() => {
-        if (running) {
-          startCycle();
-        }
+        if (running) startCycle();
       }, 80);
     }
     
-    // event binding
-    startBtn.addEventListener('click', () => {
-      startAutomation();
-    });
+    startBtn.addEventListener('click', startAutomation);
+    stopBtn.addEventListener('click', stopAutomation);
+    urlInput.addEventListener('change', () => { if (running) stopAutomation(); });
     
-    stopBtn.addEventListener('click', () => {
-      stopAutomation();
-      statusSpan.innerHTML = '🛑 Stopped by user';
-      cycleCounterSpan.innerText = `🔄 cycles: ${cycleCount}`;
-    });
-    
-    // manual safety: if user changes url while running, stop automation automatically (avoid confusion)
-    urlInput.addEventListener('change', () => {
-      if (running) {
-        stopAutomation();
-        statusSpan.innerHTML = '⛔ URL changed · auto-stop';
-      }
-    });
-    
-    // also on before unload cleanup
-    window.addEventListener('beforeunload', () => {
-      if (running) stopAutomation();
-    });
-    
-    // initial sandbox attribute extended to allow scripts / same-origin when possible
-    // keep sandbox but allow same-origin for potential interaction if site allows.
     iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation-by-user-activation');
-    
-    // set default example url display (example.com works in iframe)
     const defaultExample = 'https://example.com';
     urlInput.value = defaultExample;
     currentBaseUrl = defaultExample;
     iframe.src = 'about:blank';
-    statusSpan.innerHTML = '⚡ idle · paste link & press START';
+    statusSpan.innerHTML = '⚡ idle · set URL & START (3-4 random clicks per cycle)';
   })();
 </script>
 </body>
